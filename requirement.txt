@@ -1,0 +1,6 @@
+pandas
+numpy
+ast
+sklearn
+nltk
+-e .
