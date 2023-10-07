@@ -1,6 +1,7 @@
 pandas
 numpy
-ast
-sklearn
-nltk
+scikit-learn
+nltk == 3.8
+from_root
+datetime
 -e .
