@@ -51,3 +51,4 @@ def sem(text):
     for i in text.split():
         y.append(pm.stem(i))
     return " ".join(y)
+

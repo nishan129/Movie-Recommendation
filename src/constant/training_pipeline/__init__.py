@@ -4,7 +4,7 @@ import os
 PIPELINE_NAME: str = "movie"
 ARTIFACT_DIR: str = "artifact"
 
-PREPROCSSING_OBJECT_FILE_NAME = "preprocessing.pkl"
+PREPROCSSING_OBJECT_FILE_NAME = "model.pkl"
 
 # Datafile path 
 

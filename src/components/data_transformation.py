@@ -2,8 +2,12 @@ from src.entity.config_entity import DataTransformationConfig
 from src.entity.artifact_entity import DataTransformationArtifact
 from src.constant.training_pipeline import filepath
 from src.exception import ModelException
+from src.logger import logging
 from src.ml.enstimator import preprocess,gerns,cast,crew,sem
 import sys
+from src.utils.main_utils import save_obj
+from sklearn.feature_extraction.text import CountVectorizer 
+from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 
 class DataTransformation:
@@ -15,6 +19,7 @@ class DataTransformation:
         try:
             self.filepath = filepath
             self.data_transformation_config = data_transformation_config
+            
         except Exception as e:
             raise ModelException(e,sys)
         
@@ -50,9 +55,24 @@ class DataTransformation:
             raise ModelException(e,sys)
         
         
-    def initiate_data_transformation(self) -> DataTransformationArtifact:
+    def initiate_data_transformation(self):
+        try:
+            data1 = DataTransformation.read_data(filepath=self.filepath)
+            data = DataTransformation.Clean_Data(movie=data1)
+            # print(data.head())
+            logging.info("Data transformation done")
+            cv = CountVectorizer(max_features=5000,stop_words='english')
+            vector = cv.fit_transform(data['tags']).toarray()
+            logging.info("Model build complete")
+            similarity = cosine_similarity(vector)
+            
+            save_obj(filepath="artifact/data_transformation/transformed_object/model.pkl",obj=similarity)
+            
+            data_transformation_artifact= DataTransformationArtifact(
+                transformed_object_file_path=self.data_transformation_config.transformed_object_file_path)
+            
+            logging.info(f"Data transformation artifact: {data_transformation_artifact}")
+        except Exception as e:
+            raise ModelException(e,sys)
         
-        data1 = DataTransformation.read_data(filepath=self.filepath)
-        data = DataTransformation.Clean_Data(movie=data1)
-        print(data.head())
         

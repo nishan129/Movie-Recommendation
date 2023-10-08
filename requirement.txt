@@ -4,4 +4,6 @@ scikit-learn
 nltk == 3.8
 from_root
 datetime
+dill
+
 -e .
