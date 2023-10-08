@@ -66,7 +66,7 @@ class DataTransformation:
             logging.info("Model build complete")
             similarity = cosine_similarity(vector)
             
-            save_obj(filepath="artifact/data_transformation/transformed_object/model.pkl",obj=similarity)
+            save_obj(filepath=self.data_transformation_config.transformed_object_file_path,obj=similarity)
             
             data_transformation_artifact= DataTransformationArtifact(
                 transformed_object_file_path=self.data_transformation_config.transformed_object_file_path)
