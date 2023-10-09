@@ -4,8 +4,8 @@ from src.constant.training_pipeline import filepath
 from src.exception import ModelException
 from src.logger import logging
 from src.ml.enstimator import preprocess,gerns,cast,crew,sem
-import sys
-from src.utils.main_utils import save_obj
+import sys, os
+from src.utils.main_utils import save_obj, save_data
 from sklearn.feature_extraction.text import CountVectorizer 
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
@@ -59,6 +59,7 @@ class DataTransformation:
         try:
             data1 = DataTransformation.read_data(filepath=self.filepath)
             data = DataTransformation.Clean_Data(movie=data1)
+            #save_data(filepath=self.data_transformation_config.transformed_data_file_path,obj=data)
             # print(data.head())
             logging.info("Data transformation done")
             cv = CountVectorizer(max_features=5000,stop_words='english')
@@ -69,8 +70,13 @@ class DataTransformation:
             save_obj(filepath=self.data_transformation_config.transformed_object_file_path,obj=similarity)
             
             data_transformation_artifact= DataTransformationArtifact(
-                transformed_object_file_path=self.data_transformation_config.transformed_object_file_path)
-            
+                transformed_object_file_path=self.data_transformation_config.transformed_object_file_path,
+                transformed_data_file_path=self.data_transformation_config.transformed_data_file_path)
+            # filepath = self.data_transformation_config.transformed_data_file_path
+            # os.makedirs(filepath,exist_ok=True)
+            # data.to_csv(filepath)
+            save_obj(filepath=self.data_transformation_config.transformed_data_file_path,obj=data)
+            return data_transformation_artifact
             logging.info(f"Data transformation artifact: {data_transformation_artifact}")
         except Exception as e:
             raise ModelException(e,sys)

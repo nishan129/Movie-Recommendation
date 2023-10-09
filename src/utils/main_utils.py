@@ -2,8 +2,18 @@ from src.exception import ModelException
 from src.logger import logging
 import yaml
 import sys
+import numpy as np
 import dill
 import os
+
+def save_data(filepath: str, obj:object) -> None:
+    try:
+        logging.info("saving data is start")
+        fil = os.makedirs(os.path.join(filepath), exist_ok=True)
+        with open(filepath,'rb') as file_obj:
+            np.save(file_obj, obj)
+    except Exception as e:
+        raise ModelException (e,sys)
 
 def save_obj(filepath: str, obj:object) -> None:
     try:

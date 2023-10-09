@@ -26,6 +26,7 @@ class TraningPipeline:
     def run_pipeline(self):
         try:
             data_transformation_artifact = self.start_data_transformation(filepath=filepath)
+            return data_transformation_artifact
         except Exception as e:
             raise ModelException(e,sys)
         
